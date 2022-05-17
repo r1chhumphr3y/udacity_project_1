@@ -6,6 +6,20 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
+    """
+    Process the JSON song files
+
+    Extract:
+    Load JSON file into dataframe
+
+    Transform:
+    Drop unwanted columns
+
+    Load:
+    Insert into song table
+    Insert into artists table
+    """
+
     # open song file
     df = 
 
@@ -19,6 +33,22 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """
+    Process the JSON log files
+
+    Extract:
+    Load JSON file into dataframe
+
+    Transform:
+    Filter by NextSong
+    Convert timestamp and extract individual time components
+
+    Load:
+    Insert into time table
+    Insert into users table
+    Insert into songplay table
+
+    """
     # open log file
     df = 
 
@@ -61,6 +91,13 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    """
+    Process the json files in the filepath using the given function
+    Pass the cursor to the processing function to insert data
+
+    Assumes that create_tables.py has been run to setup tables
+    Requires that sql_queries contains the insert statements
+    """
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
