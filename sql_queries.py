@@ -1,6 +1,6 @@
 # DROP TABLES
 
-songplay_table_drop = "DROP TABLE IF EXISTS songplay"
+songplay_table_drop = "DROP TABLE IF EXISTS songplays"
 user_table_drop = "DROP TABLE IF EXISTS users"
 song_table_drop = "DROP TABLE IF EXISTS songs"
 artist_table_drop = "DROP TABLE IF EXISTS artists"
@@ -9,11 +9,11 @@ time_table_drop = "DROP TABLE IF EXISTS time"
 # CREATE TABLES
 
 songplay_table_create = ("""
-CREATE TABLE IF NOT EXISTS songplay (
-    songplay_id varchar PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS songplays (
+    songplay_id SERIAL PRIMARY KEY,
     start_time timestamp,
     user_id varchar,
-    level int,
+    level varchar,
     song_id varchar,
     artist_id varchar,
     session_id varchar,
@@ -27,8 +27,7 @@ CREATE TABLE IF NOT EXISTS users (
     first_name varchar,
     last_name varchar,
     gender varchar,
-    level varchar,
-    UNIQUE (first_name, last_name))
+    level varchar)
 """)
 
 song_table_create = ("""
@@ -63,13 +62,13 @@ CREATE TABLE IF NOT EXISTS time (
 # INSERT RECORDS
 
 songplay_table_insert = ("""
-INSERT INTO songplay (songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING
+INSERT INTO songplays (start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING
 """)
 
 user_table_insert = ("""
 INSERT INTO users (user_id, first_name, last_name, gender, level)
-    VALUES (%s, %s, %s, %s, %s) ON CONFLICT DO UPDATE SET level = EXCLUDED.level
+    VALUES (%s, %s, %s, %s, %s) ON CONFLICT (user_id) DO UPDATE SET level = EXCLUDED.level
 """)
 
 song_table_insert = ("""
@@ -90,6 +89,9 @@ INSERT INTO time (start_time, hour, day, week, month, year, weekday)
 # FIND SONGS
 
 song_select = ("""
+SELECT song_id, songs.artist_id FROM songs
+    JOIN artists ON songs.artist_id = artists.artist_id
+    WHERE (title = %s AND name = %s AND duration = %s)
 """)
 
 # QUERY LISTS
