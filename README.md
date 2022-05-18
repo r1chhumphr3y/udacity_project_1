@@ -58,6 +58,7 @@ Prereqs:
 - Postgres Database needs to have studentdb setup with user student and pasword student
 - Data should be in json files in the data/song_data and data/log_data directories.
 
+Run Programs:
 - First run create_tables.py - this will drop all tables if they exist and then create them again.
 - Then run etl.py to extract all data from the files, transform as needed, and load into Postgres database.
 
